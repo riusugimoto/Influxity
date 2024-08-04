@@ -1,0 +1,347 @@
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300&display=swap');
+
+
+body {
+    margin: 0;
+    font-family: "Red Hat Display";
+    background-color: #121212;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    height: 8vh;
+    left: 0%;
+    border-radius: 0px;
+    padding-bottom: 75px;
+    z-index: 3;
+    box-shadow: 0 0px 30px rgba(255, 255, 255, 0.2);
+    backdrop-filter: sepia(0%) blur(10px) invert(0%);
+    justify-content: space-around;
+    align-items: center;
+    margin: 0px 0px;
+    text-shadow: 0px 0px 1px rgba(255, 255, 255, 0);
+    mix-blend-mode: luminosity;
+    background: rgba(0, 0, 0, 0.9);
+    //border: solid;
+    //border-color: rgba(255, 255, 255, 0.6);
+    border-width: 1px;
+}
+
+.navbar .logo {
+    display: flex;
+    //position: absolute;
+    font-size: 2em;
+    border: solid;
+    font-weight: bold;
+    border-color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0px 0px 30px rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 30px rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 5px;
+    text-decoration: underline;
+    //backdrop-filter: sepia(77%) blur(7px) drop-shadow(0px 0px 15px rgba(255, 255, 255, 0.2));
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    align-content: center;
+}
+
+.nav-links li {
+    margin-top: 20px;
+}
+
+.nav-links a {
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.5);
+    text-shadow: 0px 0px 30px rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 30px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    margin-right: 10px;
+    //margin-left: 10px;
+    padding: 10px;
+    transition: border-color 0.3s, background-color 0.3s, color 0.3s, box-shadow 0.3s, transform 0.3s;
+    font-size: 1em;
+    font-weight: bold;
+    border: solid;
+    border-width: 2px;
+    border-radius: 5px;
+}
+
+.nav-links a:hover {
+    box-shadow: white 0px 0px 100px;
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(0, 0, 0, 0.9);
+    transform: scale(1.05);
+    text-decoration: underline;
+    text-underline-position: under;
+
+}
+
+.nav-links a:active {
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 0px 0px 20px;
+    transform: scale(0.95);
+}
+
+.auth-links {
+    display: flex;
+}
+
+.auth-links .btn {
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.5);
+    border: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    margin-left: 10px;
+    border-color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0px 0px 20px rgba(255, 255, 255, 1);
+    box-shadow: 0 0px 30px rgba(255, 255, 255, 0.2);
+    font-weight: bold;
+    padding: 10px;
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.hero {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: 0vh 0px;
+    
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(120deg, #23a6d5, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400%, 200%;
+    background-position: 50% 50%, 50% 50%;
+    filter: blur(0px) invert(0%);
+    mask-image: radial-gradient(circle at 100% 0%, black 40%, transparent 90%), 
+    radial-gradient(circle at 0% 0%, black 10%, transparent 40%),
+    radial-gradient(circle at 0% 100%, black 10%, transparent 70%);
+    animation: gradientAnimation 15s ease infinite;
+    z-index: 0;
+    
+}
+
+.hero-box {
+    display: inline-block;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0px;
+    backdrop-filter: sepia(0%) blur(0px) invert(0%);
+    //adding-top: 0vh;
+    //padding-left: 15vw;
+    //padding-right: 15vw;
+    //padding-bottom: 10vh;
+    padding: 10vh 10vw;
+    //margin-right: 15;
+    //margin-left: 15;
+    box-shadow: 0px 0px 159px rgba(255, 255, 255, 0.5);
+    //position: relative;
+    //padding: 70px;
+    z-index: 2;
+    background: rgba(0, 0, 0, 1);
+    mix-blend-mode: overlay;
+    overflow: hidden;
+}
+
+.bb {
+    //column-gap: 10px;
+    max-width: 100%;
+    //height: 1777%;
+    //padding-top: 0%;
+    margin-top: 20vh;
+    //margin-bottom: 133vh;
+    margin-right: 10vw;
+    margin-left: 10vw;
+    //padding-bottom: 6vh;
+    //padding-right: 5vw;
+    //padding-left: 5vw;
+    padding: 5vh 5vw;
+    border-radius: 5px;
+    border: solid;
+    //box-shadow: 0px 0px 70px rgba(255, 255, 255, 0.5);
+    text-shadow: 0px 0px 30px rgba(255, 255, 255, 1);
+    background: rgba(255, 255, 255, 0.30);
+    //mix-blend-mode: overlay;
+    filter: sepia(0%) blur(0px) invert(0%);
+}
+ //not used here.
+.bc {
+    //top: 43%;
+    //position: absolute;
+    display: inline-block;
+    //width: 80%;
+    height: 25%;
+    margin-bottom: 30px;
+    border-radius: 0px;
+    //box-shadow: 0px 0px 5px rgba(255, 255, 255, 1);
+    text-shadow: 0px 0px 30px rgba(255, 255, 255, 1);
+    background: rgba(255, 255, 255, 0);
+    //mix-blend-mode: overlay;
+    filter: sepia(0%) blur(0px) invert(0%) brightness(2);
+}
+
+.hero h1 {
+    position: relative;
+    color: rgba(255, 255, 255, 1);
+    font-size: 6vw;
+    margin-top: 0%;
+    margin-bottom: 0%;
+    text-align: center;
+    filter: invert(0%) sepia(0%);
+}
+
+.hero h2 {
+    text-decoration: underline;
+    display: block;
+    text-align: center;
+    filter: invert(10%) sepia(0%);
+    font-size: 2vh;
+    font-weight: lighter;
+    margin-bottom: 10%;
+    //margin-top: 0%;
+}
+
+.hero p {
+    display: block;
+    font-size: 2.2vh;
+    //margin-bottom: px;
+    font-weight: lighter;
+    text-align: center;
+    margin-bottom: 5%;
+    //margin-top: 0%;
+    filter: invert(30%) sepia(0%) brightness(1);
+}
+
+.hero-box .btn {
+    width: 60%;
+    //height: 100%;
+    display: inline-block;
+    color: rgba(255, 255, 255, 1);
+    background: rgba(0, 0, 0, 1);
+    border-width: 1px;
+    align-items: center;
+}
+
+.btn {
+    padding: 10px 20px;
+    text-decoration: none;
+    border: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    transition: border-color 0.3s, background-color 0.3s, color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.btn:hover {
+    box-shadow: white 0px 0px 100px;
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(0, 0, 0, 0.9);
+    transform: scale(1.05);
+    
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+.features,
+.about,
+.contact,
+.signup,
+.login {
+    padding: 100px 20px 50px 20px;
+    text-align: center;
+}
+
+.features h2,
+.about h2,
+.contact h2,
+.signup h2,
+.login h2 {
+    margin-bottom: 40px;
+}
+
+.feature-cards {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.feature-item {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    width: 30%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+
+.feature-item i {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.feature-item h3 {
+    margin-bottom: 10px;
+}
+
+.feature-item:hover {
+    transform: scale(1.05);
+}
+
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #1e1e1e;
+}
+
+@media (max-width: 768px) {
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        text-align: center;
+        background-color: #1e1e1e;
+        position: absolute;
+        top: 60px;
+        left: 0;
+    }
+
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}

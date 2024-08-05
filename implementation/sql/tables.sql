@@ -1,3 +1,48 @@
+-- Begin the PL/SQL block to drop tables
+BEGIN
+    FOR t IN (SELECT table_name FROM user_tables WHERE table_name IN (
+        'CURRENCYEXCHANGERATE', 'TRANSACTIONIDEXCHANGERATE', 'TRANSACTIONIDCURRENCY',
+        'TRANSACTIONIDTIMESTAMP', 'TRANSACTIONIDAMOUNT', 'TRANSACTIONIDDATAREQUESTID',
+        'TRANSACTIONIDUSERID', 'DATABELONGCATEGORY', 'DATACATEGORY', 'DATAREQUEST',
+        'COMPANY', 'USERGENERATEDREPORTDETAILS', 'REPORTGENERATEDON', 'TRANSPARENCYREPORT',
+        'USERACTIVITYDETAILS', 'USERACTIVITYTYPE', 'ACTIVITYTIMESTAMP', 'ACTIVITY',
+        'COMPANYNAMESIZE', 'COMPANYNAMEINDUSTRY', 'CORPORATEUSER', 'INDIVIDUALUSERNAME',
+        'INDIVIDUALUSER', 'USEREMAILPASSWORD', 'USEREMAILUSERNAME', 'USERS'
+    )) LOOP
+        EXECUTE IMMEDIATE 'DROP TABLE ' || t.table_name || ' CASCADE CONSTRAINTS';
+    END LOOP;
+END;
+/
+
+-- Drop sequences if they exist
+BEGIN
+    EXECUTE IMMEDIATE 'DROP SEQUENCE DataRequest_seq';
+EXCEPTION
+    WHEN OTHERS THEN
+        NULL; -- Ignore if the sequence does not exist
+END;
+/
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP SEQUENCE User_seq';
+EXCEPTION
+    WHEN OTHERS THEN
+        NULL; -- Ignore if the sequence does not exist
+END;
+/
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP SEQUENCE TransactionID_seq';
+EXCEPTION
+    WHEN OTHERS THEN
+        NULL; -- Ignore if the sequence does not exist
+END;
+/
+
+
+
+
+
 -- User Table
 CREATE TABLE Users (
     UserID INTEGER PRIMARY KEY,
@@ -152,11 +197,12 @@ CREATE TABLE DataBelongCategory (
 
 -- TransactionIDUserID Table
 CREATE TABLE TransactionIDUserID (
-    TransactionID INTEGER NOT NULL,
-    UserID INTEGER NOT NULL,
+    TransactionID INT NOT NULL,
+    UserID INT NOT NULL,
+    DataText VARCHAR(255) NOT NULL,
     PRIMARY KEY (TransactionID),
-    FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    UNIQUE (UserID)
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+    --removed UNIQUE constraint to allow multiple transactions for the same user
 );
 
 -- TransactionIDDataRequestID Table
@@ -207,14 +253,20 @@ CREATE TABLE CurrencyExchangeRate (
 );
 
 CREATE SEQUENCE DataRequest_seq
-    START WITH 5 --default adds 5
+    START WITH 6 --default starts with 6 since we have 5 already
     INCREMENT BY 1
     NOCACHE;
 
 CREATE SEQUENCE User_seq
-    START WITH 5 --default adds 5
+    START WITH 6 --default starts with 6 since we have 5 already
     INCREMENT BY 1
     NOCACHE;
+
+CREATE SEQUENCE TransactionID_seq
+    START WITH 6 --default starts with 6 since we have 5 already
+    INCREMENT BY 1
+    NOCACHE;
+
 
 --Table population process
 -----------------------------------------------------------------------
@@ -353,11 +405,11 @@ INSERT INTO DataBelongCategory (CategoryID, DataRequestID, CompanyID) VALUES (4,
 INSERT INTO DataBelongCategory (CategoryID, DataRequestID, CompanyID) VALUES (5, 5, 5);
 
 -- TransactionIDUserID table
-INSERT INTO TransactionIDUserID (TransactionID, UserID) VALUES (1, 1);
-INSERT INTO TransactionIDUserID (TransactionID, UserID) VALUES (2, 2);
-INSERT INTO TransactionIDUserID (TransactionID, UserID) VALUES (3, 3);
-INSERT INTO TransactionIDUserID (TransactionID, UserID) VALUES (4, 4);
-INSERT INTO TransactionIDUserID (TransactionID, UserID) VALUES (5, 5);
+INSERT INTO TransactionIDUserID (TransactionID, UserID, DataText) VALUES (1, 1, 'Testing upload data request');
+INSERT INTO TransactionIDUserID (TransactionID, UserID, DataText) VALUES (2, 2,'Testing upload data request');
+INSERT INTO TransactionIDUserID (TransactionID, UserID, DataText) VALUES (3, 3,'Testing upload data request');
+INSERT INTO TransactionIDUserID (TransactionID, UserID, DataText) VALUES (4, 4,'Testing upload data request');
+INSERT INTO TransactionIDUserID (TransactionID, UserID, DataText) VALUES (5, 5,'Testing upload data request');
 
 -- TransactionIDDataRequestID table
 INSERT INTO TransactionIDDataRequestID (TransactionID, DataRequestID) VALUES (1, 1);
@@ -400,3 +452,6 @@ INSERT INTO CurrencyExchangeRate (Currency, ExchangeRate) VALUES ('EUR', 0.90);
 INSERT INTO CurrencyExchangeRate (Currency, ExchangeRate) VALUES ('GBP', 0.80);
 INSERT INTO CurrencyExchangeRate (Currency, ExchangeRate) VALUES ('JPY', 110.00);
 INSERT INTO CurrencyExchangeRate (Currency, ExchangeRate) VALUES ('CAD', 1.30);
+
+COMMIT;
+/

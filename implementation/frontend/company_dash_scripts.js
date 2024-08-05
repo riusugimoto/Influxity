@@ -69,5 +69,40 @@ async function fetchCompanyDashboardData() {
         console.error('Fetch error:', error);
     }
 }
- //Have to find a way to calculate total transaction amount and display the data dynamically.
- //prob will add comments after the file is done idk.
+
+function updateUserData(transactions) {
+    const userDataTableBody = document.getElementById('userDataTable').querySelector('tbody');
+    const dataCategoryFilterValue = document.getElementById('dataCategoryFilter').value;
+    const userSearchValue = document.getElementById('userSearch').value.toLowerCase();
+
+    userDataTableBody.innerHTML = '';
+
+    transactions
+        .filter(transaction => {
+            const matchesCategory = !dataCategoryFilterValue || transaction.CATEGORYNAME.toLowerCase() === dataCategoryFilterValue.toLowerCase();
+            const matchesUser = !userSearchValue || transaction.USERID.toString().toLowerCase().includes(userSearchValue);
+            return matchesCategory && matchesUser;
+        })
+        .forEach(transaction => {
+            const row = userDataTableBody.insertRow();
+            row.innerHTML = `
+                <td>${transaction.USERID}</td>
+                <td>${transaction.DATATEXT}</td>
+                <td>${transaction.DATAPURPOSE}</td>
+                <td>${transaction.CATEGORYNAME}</td>
+                <td>${transaction.REQUESTEDCOMPENSATION}</td>
+                <td>
+                    <form class="reviewForm" action="../backend/review_data.php" method="POST">
+                        <input type="hidden" name="transactionID" value="${transaction.TRANSACTIONID}">
+                        <button type="submit" name="action" value="accept" class="btn">Accept</button>
+                        <button type="submit" name="action" value="reject" class="btn">Reject</button>
+                        <input type="number" name="compensation" placeholder="Compensation" required>
+                        <button type="submit" name="action" value="accept_with_compensation" class="btn">Accept with Compensation</button>
+                    </form>
+                </td>
+            `;
+        });
+}
+
+//still need a way to update on a request by request basis. 
+    // I.e The page should update any time relavent data is changed locally or on the server.

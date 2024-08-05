@@ -62,6 +62,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
     }
+
+    const showAnalyticsLink = document.getElementById('showAnalytics');
+    const analyticsSection = document.getElementById('analyticsSection');
+
+    if (showAnalyticsLink) {
+        showAnalyticsLink.addEventListener('click', () => {
+            analyticsSection.style.display = analyticsSection.style.display === 'none' ? 'block' : 'none';
+            if (analyticsSection.style.display === 'block') {
+                fetchReviewedUserData();
+            }
+        });
+    }
 });
 
 async function fetchUserDashboardData() {
@@ -91,6 +103,7 @@ async function fetchUserDashboardData() {
         updateGrantedDataHistory(data.granted_data_history || []);
         updateCompensationHistory(data.compensation_history || []);
         updateTransparencyReports(data.transparency_reports || []);
+        updateSubmittedDataHistory(data.submitted_data_history || []);
     } catch (error) {
         console.error('Fetch error:', error);
     }
@@ -159,4 +172,39 @@ function updateTransparencyReports(transparencyReports) {
             <p>Details: ${report.DETAILS || 'No details available'}</p>
         </div>
     `).join('');
+}
+
+function updateSubmittedDataHistory(submittedDataHistory) {
+    const submittedDataHistorySection = document.getElementById('granted-data-history');
+    submittedDataHistorySection.innerHTML = '<h3>Submitted Data History</h3>';
+
+    if (submittedDataHistory.length === 0) {
+        submittedDataHistorySection.innerHTML += "<p>No data submission history yet.</p>";
+        return;
+    }
+
+    const table = document.createElement('table');
+    table.classList.add('data-table');
+
+    const headerRow = table.insertRow();
+    ['Transaction ID', 'Company', 'Data Purpose', 'Review Status', 'Offered Compensation'].forEach(header => {
+        const headerCell = headerRow.insertCell();
+        headerCell.textContent = header;
+    });
+
+    submittedDataHistory.forEach(item => {
+        const row = table.insertRow();
+        [
+            item.TRANSACTIONID,
+            item.COMPANYNAME,
+            item.DATAPURPOSE,
+            item.STATUS,
+            item.COMPENSATION || '-' // this might've been causing NULL outputs I think
+        ].forEach(value => {
+            const cell = row.insertCell();
+            cell.textContent = value;
+        });
+    });
+
+    submittedDataHistorySection.appendChild(table);
 }

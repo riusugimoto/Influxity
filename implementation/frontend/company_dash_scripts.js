@@ -104,5 +104,18 @@ function updateUserData(transactions) {
         });
 }
 
-//still need a way to update on a request by request basis. 
-    // I.e The page should update any time relavent data is changed locally or on the server.
+function updateDataRequests(dataRequests) {
+    const dataRequestsTableBody = document.getElementById('dataRequestsTable').querySelector('tbody');
+
+    dataRequestsTableBody.innerHTML = '';
+
+    dataRequests.forEach(request => {
+        const row = dataRequestsTableBody.insertRow();
+        row.innerHTML = `
+            <td>${request.DATAPURPOSE}</td>
+            <td>${request.COMPENSATION}</td>
+            <td>${request.CATEGORYNAME}</td>
+        `;
+    });
+}
+

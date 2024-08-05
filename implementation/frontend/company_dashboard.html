@@ -71,7 +71,34 @@
                     </tbody>
                 </table>
             </section>
-           <!-- should include more JS dependieceis here once I figure out how the heck to dynamically update the UI-->
+            <section class="data-request-section">
+                <h2>Submit New Data Request</h2>
+                <form id="dataRequestForm" action="../backend/submit_data_request.php" method="POST">
+                    <input type="text" name="dataPurpose" placeholder="Data Purpose" required>
+                    <input type="number" name="compensation" placeholder="Compensation" required>
+                    <select name="categoryID" required>
+                        <option value="">Select Category</option>
+                        <option value="1">Demographics</option>
+                        <option value="2">Health</option>
+                        <option value="3">Education</option>
+                        <option value="4">Finance</option>
+                        <option value="5">Environment</option>
+                    </select>
+                    <button type="submit" class="btn">Submit Data Request</button>
+                </form>
+                <table id="dataRequestsTable">
+                    <thead>
+                        <tr>
+                            <th>Data Purpose</th>
+                            <th>Compensation</th>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- JS stuff -->
+                    </tbody>
+                </table>
+            </section>
         </div>
     </div>
 

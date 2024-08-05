@@ -119,3 +119,12 @@ function updateDataRequests(dataRequests) {
     });
 }
 
+function updateMetrics(activeDataRequestsCount, reviewedDataCount, totalCompensation) {
+    document.getElementById('active-data-requests-count').textContent = activeDataRequestsCount;
+    document.getElementById('reviewed-data-count').textContent = reviewedDataCount;
+    document.getElementById('total-compensation').textContent = `$${totalCompensation}`;
+}
+
+function calculateTotalCompensation(compensations) {
+    return compensations.reduce((total, comp) => total + parseFloat(comp.AMOUNT), 0).toFixed(2);
+}

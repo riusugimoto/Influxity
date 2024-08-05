@@ -8,28 +8,30 @@ body {
     color: #fff;
     justify-content: center;
     align-items: center;
+    
 }
 
-.navbar {
+.navbar { 
     display: flex;
     position: fixed;
-    width: 100%;
+    width: 70%;
     height: 8vh;
-    left: 0%;
-    border-radius: 0px;
-    padding-bottom: 75px;
+    left: 15%;
+    //border-radius: 50px;
+    padding-bottom: 70px;
     z-index: 3;
     box-shadow: 0 0px 30px rgba(255, 255, 255, 0.2);
     backdrop-filter: sepia(0%) blur(10px) invert(0%);
     justify-content: space-around;
     align-items: center;
-    margin: 0px 0px;
+    margin: -2px 0px;
     text-shadow: 0px 0px 1px rgba(255, 255, 255, 0);
     mix-blend-mode: luminosity;
-    background: rgba(0, 0, 0, 0.9);
-    //border: solid;
-    //border-color: rgba(255, 255, 255, 0.6);
-    border-width: 1px;
+    background: rgba(0, 0, 0, 0.5);
+    border: solid;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.7);
+   
 }
 
 .navbar .logo {
@@ -37,14 +39,15 @@ body {
     //position: absolute;
     font-size: 2em;
     border: solid;
-    font-weight: bold;
+    border-width: 2px;
+    font-weight: 800;
     border-color: rgba(255, 255, 255, 0.9);
-    color: rgba(255, 255, 255, 0.8);
-    text-shadow: 0px 0px 30px rgba(255, 255, 255, 1);
-    box-shadow: 0px 0px 30px rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.5);
-    padding: 5px;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px;
     text-decoration: underline;
     //backdrop-filter: sepia(77%) blur(7px) drop-shadow(0px 0px 15px rgba(255, 255, 255, 0.2));
 }
@@ -61,10 +64,11 @@ body {
 }
 
 .nav-links a {
-    color: rgba(255, 255, 255, 0.8);
-    background: rgba(255, 255, 255, 0.5);
-    text-shadow: 0px 0px 30px rgba(255, 255, 255, 1);
-    box-shadow: 0px 0px 30px rgba(255, 255, 255, 0.2);
+    position: relative;
+    color: rgba(255, 255, 255, 1);
+    background: rgba(0, 0, 0, 0);
+    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.9);
     text-decoration: none;
     margin-right: 10px;
@@ -74,8 +78,9 @@ body {
     font-size: 1em;
     font-weight: bold;
     border: solid;
-    border-width: 2px;
-    border-radius: 5px;
+    border-width: 1px;
+    border-radius: 50px;
+    
 }
 
 .nav-links a:hover {
@@ -100,15 +105,15 @@ body {
 }
 
 .auth-links .btn {
-    color: rgba(255, 255, 255, 0.8);
-    background: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 1);
+    background: rgba(255, 255, 255, 0);
     border: solid;
-    border-radius: 5px;
-    border-width: 2px;
+    border-radius: 50px;
+    border-width: 1px;
     margin-left: 10px;
     border-color: rgba(255, 255, 255, 0.9);
-    text-shadow: 0px 0px 20px rgba(255, 255, 255, 1);
-    box-shadow: 0 0px 30px rgba(255, 255, 255, 0.2);
+    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0px 15px rgba(255, 255, 255, 0.2);
     font-weight: bold;
     padding: 10px;
 }
@@ -156,16 +161,8 @@ body {
     height: 100vh;
     border-radius: 0px;
     backdrop-filter: sepia(0%) blur(0px) invert(0%);
-    //adding-top: 0vh;
-    //padding-left: 15vw;
-    //padding-right: 15vw;
-    //padding-bottom: 10vh;
     padding: 10vh 10vw;
-    //margin-right: 15;
-    //margin-left: 15;
     box-shadow: 0px 0px 159px rgba(255, 255, 255, 0.5);
-    //position: relative;
-    //padding: 70px;
     z-index: 2;
     background: rgba(0, 0, 0, 1);
     mix-blend-mode: overlay;
@@ -173,24 +170,17 @@ body {
 }
 
 .bb {
-    //column-gap: 10px;
-    max-width: 100%;
-    //height: 1777%;
-    //padding-top: 0%;
-    margin-top: 20vh;
-    //margin-bottom: 133vh;
+    max-width: 100%;   
+    margin-top: 15vh;
     margin-right: 10vw;
     margin-left: 10vw;
-    //padding-bottom: 6vh;
-    //padding-right: 5vw;
-    //padding-left: 5vw;
     padding: 5vh 5vw;
     border-radius: 5px;
     border: solid;
-    //box-shadow: 0px 0px 70px rgba(255, 255, 255, 0.5);
+    border-width: 3px;
     text-shadow: 0px 0px 30px rgba(255, 255, 255, 1);
     background: rgba(255, 255, 255, 0.30);
-    //mix-blend-mode: overlay;
+    border-color: rgba(255, 255, 255, 1);
     filter: sepia(0%) blur(0px) invert(0%);
 }
  //not used here.
@@ -213,6 +203,7 @@ body {
     position: relative;
     color: rgba(255, 255, 255, 1);
     font-size: 6vw;
+    font-weight: 900;
     margin-top: 0%;
     margin-bottom: 0%;
     text-align: center;
@@ -226,8 +217,8 @@ body {
     filter: invert(10%) sepia(0%);
     font-size: 2vh;
     font-weight: lighter;
-    margin-bottom: 10%;
-    //margin-top: 0%;
+    margin-bottom: 5%;
+    margin-top: 5%;
 }
 
 .hero p {
@@ -273,6 +264,23 @@ body {
     transform: scale(0.95);
 }
 
+.ff{
+    background: rgba(0, 0, 0, 0.5);
+    //overflow: visible;
+    backdrop-filter: blur(10px);
+    //opacity: 100%;
+    z-index: 3;
+    mix-blend-mode: overlay;
+    text-shadow: 0px 0px 15px rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 1);
+}
+.ff .navbar-text{
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 2.5em;
+    mix-blend-mode: difference;
+    //text-shadow: 0px 0px 15px rgba(255, 255, 255, 1);
+}
+
 .features,
 .about,
 .contact,
@@ -280,8 +288,27 @@ body {
 .login {
     padding: 100px 20px 50px 20px;
     text-align: center;
+    border: thick;
+    border-width: 100px;
+}
+.features{
+    background: linear-gradient(35deg, #23a6d5, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400%, 200%;
+    background-position: 50% 50%, 50% 50%;
+    filter: blur(0px) invert(0%);
+    mask-image: radial-gradient(circle at 100% 0%, black 40%, transparent 90%), 
+    radial-gradient(circle at 0% 0%, black 10%, transparent 40%),
+    radial-gradient(circle at 0% 100%, black 1%, transparent 70%);
+    animation: gradientAnimation 30s ease infinite;
+    //mix-blend-mode: overlay;
+    margin: 0px;
+    transition: all 0.5s ease-in-out;
 }
 
+.features.in-view .feature-item {
+  opacity: 1;
+  transform: translateY(0);
+}
 .features h2,
 .about h2,
 .contact h2,
@@ -294,16 +321,30 @@ body {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    mix-blend-mode: luminosity;
+    text-shadow: 0px 0px 15px rgba(255, 255, 255, 0.5);
+    background: rgba(0, 0, 0, 0.5);
+    border: solid;   
+    border-color: rgba(0, 0, 0, 1);    
+    backdrop-filter: blur(10px) invert(00%);
+    box-shadow: 0 0px 15px rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);    
+
 }
 
 .feature-item {
-    background-color: #1e1e1e;
+    background-color: rgba(0, 0, 0, 0.4);
     border-radius: 10px;
     padding: 20px;
-    margin: 10px;
-    width: 30%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s;
+    margin: 20px;
+    width: 40%;
+    box-shadow: 0 0px 15px rgba(255, 255, 255, 0.3);
+    transition: transform 0.5s;
+    mix-blend-mode: difference;
+    border: solid;  
+    border-width: 3px;
+    border-color: rgba(255, 255, 255, 0.5);    
+    
 }
 
 .feature-item i {

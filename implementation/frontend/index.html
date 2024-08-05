@@ -12,7 +12,7 @@
 
 <body>
   <div class="test"></div>
-  <nav class="navbar">
+  <nav class="navbar rounded-4 rounded-top-0">
     <ul class="nav-links">
       <li><a href="#features">Features</a></li>
       <li><a href="#about">About</a></li>
@@ -38,10 +38,15 @@
       </div>
     </div>
   </section>
-
-  <section id="features" class="features">
+ 
+  <section id="features" class="features" style="--bs-border-color-translucent: 50%"> 
+    <nav class="ff fixed-top navbar position-absolute start-50 translate-middle-x rounded-5 rounded-top-0">
+      <span class="navbar-text">
+        Key Features
+      </span>
+  </nav>
     <h2>Key Features</h2>
-    <div class="feature-cards">
+    <div class="feature-cards rounded-5 rounded-bottom-5">
       <div class="feature-item">
         <i class="fas fa-money-bill-wave"></i>
         <h3>Monetize Your Data</h3>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Influxity</title>
+    <link rel="stylesheet" href="dashstyles.css">
+
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <nav class="sidebar">
+            <div class="logo">Influxity</div>
+            <ul>
+                <li><a href="#" class="active"><dashboard-icon></dashboard-icon>Dashboard</a></li>
+                <li><a href="#"><analytics-icon></analytics-icon>Analytics</a></li>
+                <li><a href="#"><messages-icon></messages-icon>Messages</a></li>
+                <li><a href="#"><collections-icon></collections-icon>Collections</a></li>
+                <li><a href="#"><users-icon></users-icon>Users</a></li>
+            </ul>
+        </nav>
+        <div class="main-content">
+            <header>
+                <div class="top-bar">
+                    <div class="search-box">
+                        <input type="text" id="companySearch" placeholder="Search for a company...">
+                    </div>
+                    <div class="user-info">
+                        <a href="logout.html" class="btn">Log Out</a>
+                    </div>
+                </div>
+            </header>
+            <section class="metrics">
+                <div class="card">
+                    <h3>Budget</h3>
+                    <p>$750.90</p>
+                    <span>↑ 13% Since last month</span>
+                </div>
+                <div class="card">
+                    <h3>New Projects</h3>
+                    <p>215</p>
+                    <span>↑ 30% Since last month</span>
+                </div>
+                <div class="card">
+                    <h3>Total Hours</h3>
+                    <p>1,400</p>
+                    <span>↓ 5% Since last month</span>
+                </div>
+                <div class="card">
+                    <h3>Work Load</h3>
+                    <p>95%</p>
+                    <span>↑ 10% Since last month</span>
+                </div>
+            </section>
+            <section class="data-section">
+                <h2>Active Company Data Requests</h2>
+                <div class="controls">
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="1">Demographics</option>
+                        <option value="2">Health</option>
+                        <option value="3">Education</option>
+                        <option value="4">Finance</option>
+                        <option value="5">Environment</option>
+                    </select>
+                </div>
+                <table id="dataRequestsTable">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Data Purpose</th>
+                            <th>Compensation</th>
+                            <th>Category</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be inserted here by JavaScript -->
+                    </tbody>
+                </table>
+                <div id="granted-data-history">
+                    <h3>Granted Data History</h3>
+                </div>
+                <div id="compensation-history">
+                    <h3>Compensation History</h3>
+                </div>
+                <div id="transparency-reports">
+                    <h3>Transparency Reports</h3>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Modal for Data Submission -->
+    <div id="dataSubmissionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Submit Data</h2>
+            <form id="dataSubmissionForm" action="../backend/upload_data.php" method="POST">
+                <input type="hidden" id="dataRequestID" name="dataRequestID">
+                <label for="data">Data:</label>
+                <textarea id="data" name="data" required></textarea>
+                <button data-ui="#dialog" type="submit" class="btn">Submit</button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Need to update to use with beercss -->
+    <div class="overlay blur"></div>
+    <dialog id="dialog">
+        <div>Some text here</div>
+        <nav class="right-align no-space">
+            <button data-ui="#dialog" class="extend square  large-elevate transparent link">Confirm
+                <i>arrow_forward</i>
+                <span>Log in</span></button>
+        </nav>
+    </dialog>
+    <script src="user_dash_scripts.js"></script>
+</body>
+
+</html>

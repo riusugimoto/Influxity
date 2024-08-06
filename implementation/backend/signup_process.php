@@ -21,7 +21,7 @@ if (!$conn) {
 $email = $_POST['email'];
 $username = $_POST['username'];
 $password = $_POST['password'];
-$userType = $_POST['userType'];  // New: Retrieve the user type
+$userType = $_POST['userType']; 
 
 // Hashing is somewhat annoying when we have to deal with populating users using our script.
 // For the sake of the demo, we can remove password hashing.
@@ -50,7 +50,6 @@ try {
     }
     oci_free_statement($stid);
 
-    // Get the new UserID
     $query = "SELECT User_seq.CURRVAL AS UserID FROM dual";
     $stid = oci_parse($conn, $query);
     oci_execute($stid);
@@ -78,7 +77,7 @@ try {
     }
     oci_free_statement($stid);
 
-    // Insert into the appropriate user type table
+    // User type check. 
     if ($userType === 'individual') {
         $firstName = $_POST['firstName'];
         $lastName = $_POST['lastName'];
@@ -155,7 +154,6 @@ try {
         oci_free_statement($stid);
     }
 
-    // Commit the transaction
     if (!oci_commit($conn)) {
         $e = oci_error($conn);
         throw new Exception("Error committing transaction: " . htmlentities($e['message'], ENT_QUOTES));
@@ -167,6 +165,5 @@ try {
     echo "Sign up failed: " . $e->getMessage();
 }
 
-// Close the connection
 oci_close($conn);
 ?>

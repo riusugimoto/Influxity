@@ -51,7 +51,7 @@ if ($row = oci_fetch_assoc($stid)) {
             exit;
         }
 
-        // Check if the user is a corporate user and retrieve COMPANYID from the Company table
+        // Check if the user is a corporate user and retrieve the company id from the Company table
         $userTypeQuery = "SELECT c.CompanyID, c.Name AS CompanyName 
                           FROM CorporateUser cu
                           JOIN Company c ON cu.CompanyName = c.Name

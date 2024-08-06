@@ -184,7 +184,7 @@ function updateSubmittedDataHistory(submittedDataHistory) {
     }
 
     const table = document.createElement('table');
-    table.classList.add('data-table');
+    table.classList.add('data-table'); // Add a CSS class for styling if needed
 
     const headerRow = table.insertRow();
     ['Transaction ID', 'Company', 'Data Purpose', 'Review Status', 'Offered Compensation'].forEach(header => {

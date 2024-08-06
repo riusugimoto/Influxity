@@ -26,7 +26,7 @@ if (oci_execute($stid)) {
     echo 'Data request deleted successfully';
 } else {
     $e = oci_error($stid);
-    echo 'Error deleting data request: ' . htmlentities($e['message'], ENT_QUOTES);
+    echo json_encode(['error' => "Error fetching submitted data history: " . htmlentities($e['message'], ENT_QUOTES)]);
 }
 
 if (!oci_commit($conn)) {

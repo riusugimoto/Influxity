@@ -1,3 +1,44 @@
+-- Begin the PL/SQL block to drop tables
+BEGIN
+    FOR t IN (SELECT table_name FROM user_tables WHERE table_name IN (
+        'CURRENCYEXCHANGERATE', 'TRANSACTIONIDEXCHANGERATE', 'TRANSACTIONIDCURRENCY',
+        'TRANSACTIONIDTIMESTAMP', 'TRANSACTIONIDAMOUNT', 'TRANSACTIONIDDATAREQUESTID',
+        'TRANSACTIONIDUSERID', 'DATABELONGCATEGORY', 'DATACATEGORY', 'DATAREQUEST',
+        'COMPANY', 'USERGENERATEDREPORTDETAILS', 'REPORTGENERATEDON', 'TRANSPARENCYREPORT',
+        'USERACTIVITYDETAILS', 'USERACTIVITYTYPE', 'ACTIVITYTIMESTAMP', 'ACTIVITY',
+        'COMPANYNAMESIZE', 'COMPANYNAMEINDUSTRY', 'CORPORATEUSER', 'INDIVIDUALUSERNAME',
+        'INDIVIDUALUSER', 'USEREMAILPASSWORD', 'USEREMAILUSERNAME', 'USERS'
+    )) LOOP
+        EXECUTE IMMEDIATE 'DROP TABLE ' || t.table_name || ' CASCADE CONSTRAINTS';
+    END LOOP;
+END;
+/
+
+-- Drop sequences if they exist
+BEGIN
+    EXECUTE IMMEDIATE 'DROP SEQUENCE DataRequest_seq';
+EXCEPTION
+    WHEN OTHERS THEN
+        NULL; -- Ignore if the sequence does not exist
+END;
+/
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP SEQUENCE User_seq';
+EXCEPTION
+    WHEN OTHERS THEN
+        NULL; -- Ignore if the sequence does not exist
+END;
+/
+
+BEGIN
+    EXECUTE IMMEDIATE 'DROP SEQUENCE TransactionID_seq';
+EXCEPTION
+    WHEN OTHERS THEN
+        NULL; -- Ignore if the sequence does not exist
+END;
+/
+
 -- User Table
 CREATE TABLE Users (
     UserID INTEGER PRIMARY KEY,
@@ -8,14 +49,14 @@ CREATE TABLE Users (
 CREATE TABLE UserEmailUsername (
     Email VARCHAR(255) PRIMARY KEY,
     Username VARCHAR(255) NOT NULL,
-    FOREIGN KEY (Email) REFERENCES Users(Email)
+    FOREIGN KEY (Email) REFERENCES Users(Email) ON DELETE CASCADE
 );
 
 -- UserEmailPassword Table
 CREATE TABLE UserEmailPassword (
     Email VARCHAR(255) PRIMARY KEY,
     Password VARCHAR(255) NOT NULL,
-    FOREIGN KEY (Email) REFERENCES Users(Email)
+    FOREIGN KEY (Email) REFERENCES Users(Email) ON DELETE CASCADE
 );
 
 -- IndividualUser Table
@@ -34,7 +75,7 @@ CREATE TABLE IndividualUserName (
     DateOfBirth DATE,
     UserID INTEGER,
     PRIMARY KEY (FirstName, LastName, DateOfBirth),
-    FOREIGN KEY (UserID) REFERENCES IndividualUser(UserID)
+    FOREIGN KEY (UserID) REFERENCES IndividualUser(UserID) ON DELETE CASCADE
 );
 
 -- CorporateUser Table
@@ -48,14 +89,14 @@ CREATE TABLE CorporateUser (
 CREATE TABLE CompanyNameIndustry (
     CompanyName VARCHAR(100) PRIMARY KEY,
     Industry VARCHAR(50) NOT NULL,
-    FOREIGN KEY (CompanyName) REFERENCES CorporateUser(CompanyName)
+    FOREIGN KEY (CompanyName) REFERENCES CorporateUser(CompanyName) ON DELETE CASCADE
 );
 
 -- CompanyNameSize Table
 CREATE TABLE CompanyNameSize (
     CompanyName VARCHAR(100) PRIMARY KEY,
     CompanySize VARCHAR(20) NOT NULL,
-    FOREIGN KEY (CompanyName) REFERENCES CorporateUser(CompanyName)
+    FOREIGN KEY (CompanyName) REFERENCES CorporateUser(CompanyName) ON DELETE CASCADE
 );
 
 -- Activity Table
@@ -69,7 +110,7 @@ CREATE TABLE Activity (
 CREATE TABLE ActivityTimestamp (
     ActivityID INTEGER PRIMARY KEY,
     Timestamp TIMESTAMP NOT NULL,
-    FOREIGN KEY (ActivityID) REFERENCES Activity(ActivityID)
+    FOREIGN KEY (ActivityID) REFERENCES Activity(ActivityID) ON DELETE CASCADE
 );
 
 -- UserActivityType Table
@@ -78,7 +119,7 @@ CREATE TABLE UserActivityType (
     Timestamp TIMESTAMP,
     ActivityType VARCHAR(50) NOT NULL,
     PRIMARY KEY (UserID, Timestamp),
-    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
 
 -- UserActivityDetails Table
@@ -87,7 +128,7 @@ CREATE TABLE UserActivityDetails (
     Timestamp TIMESTAMP,
     ActivityDetails CLOB,
     PRIMARY KEY (UserID, Timestamp),
-    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
 
 -- TransparencyReport Table
@@ -101,7 +142,7 @@ CREATE TABLE TransparencyReport (
 CREATE TABLE ReportGeneratedOn (
     ReportID INTEGER PRIMARY KEY,
     GeneratedOn TIMESTAMP NOT NULL,
-    FOREIGN KEY (ReportID) REFERENCES TransparencyReport(ReportID)
+    FOREIGN KEY (ReportID) REFERENCES TransparencyReport(ReportID) ON DELETE CASCADE
 );
 
 -- UserGeneratedReportDetails Table
@@ -110,7 +151,7 @@ CREATE TABLE UserGeneratedReportDetails (
     GeneratedOn TIMESTAMP,
     ReportDetails CLOB,
     PRIMARY KEY (UserID, GeneratedOn),
-    FOREIGN KEY (UserID) REFERENCES Users(UserID)
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
 
 -- Company Table
@@ -136,27 +177,29 @@ CREATE TABLE DataRequest (
     DataPurpose VARCHAR(255) NOT NULL, 
     CategoryID INT NOT NULL,
     Status VARCHAR(50) NOT NULL,
-    FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID),
-    FOREIGN KEY (CategoryID) REFERENCES DataCategory(CategoryID)
+    FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID) ON DELETE CASCADE,
+    FOREIGN KEY (CategoryID) REFERENCES DataCategory(CategoryID) ON DELETE CASCADE
 );
+
 -- DataBelongCategory Table
 CREATE TABLE DataBelongCategory (
     CategoryID INT NOT NULL,
     DataRequestID INT NOT NULL,
     CompanyID INT NOT NULL,
     PRIMARY KEY (CategoryID, DataRequestID),
-    FOREIGN KEY (CategoryID) REFERENCES DataCategory(CategoryID),
-    FOREIGN KEY (DataRequestID) REFERENCES DataRequest(DataRequestID),
-    FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID)
+    FOREIGN KEY (CategoryID) REFERENCES DataCategory(CategoryID) ON DELETE CASCADE,
+    FOREIGN KEY (DataRequestID) REFERENCES DataRequest(DataRequestID) ON DELETE CASCADE,
+    FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID) ON DELETE CASCADE
 );
 
 -- TransactionIDUserID Table
 CREATE TABLE TransactionIDUserID (
-    TransactionID INTEGER NOT NULL,
-    UserID INTEGER NOT NULL,
+    TransactionID INT NOT NULL,
+    UserID INT NOT NULL,
+    DataText VARCHAR(255) NOT NULL,
     PRIMARY KEY (TransactionID),
-    FOREIGN KEY (UserID) REFERENCES Users(UserID),
-    UNIQUE (UserID)
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+    --removed UNIQUE constraint to allow multiple transactions for the same user
 );
 
 -- TransactionIDDataRequestID Table
@@ -164,7 +207,7 @@ CREATE TABLE TransactionIDDataRequestID (
     TransactionID INTEGER NOT NULL,
     DataRequestID INTEGER NOT NULL,
     PRIMARY KEY (TransactionID),
-    FOREIGN KEY (DataRequestID) REFERENCES DataRequest(DataRequestID),
+    FOREIGN KEY (DataRequestID) REFERENCES DataRequest(DataRequestID) ON DELETE CASCADE,
     UNIQUE (DataRequestID)
 );
 
@@ -173,7 +216,7 @@ CREATE TABLE TransactionIDAmount (
     TransactionID INTEGER NOT NULL,
     Amount INTEGER NOT NULL,
     PRIMARY KEY (TransactionID),
-    FOREIGN KEY (TransactionID) REFERENCES TransactionIDUserID(TransactionID)
+    FOREIGN KEY (TransactionID) REFERENCES TransactionIDUserID(TransactionID) ON DELETE CASCADE
 );
 
 -- TransactionIDTimestamp Table
@@ -181,7 +224,7 @@ CREATE TABLE TransactionIDTimestamp (
     TransactionID INTEGER NOT NULL,
     Timestamp DATE NOT NULL,
     PRIMARY KEY (TransactionID),
-    FOREIGN KEY (TransactionID) REFERENCES TransactionIDUserID(TransactionID)
+    FOREIGN KEY (TransactionID) REFERENCES TransactionIDUserID(TransactionID) ON DELETE CASCADE
 );
 
 -- TransactionIDCurrency Table
@@ -189,7 +232,7 @@ CREATE TABLE TransactionIDCurrency (
     TransactionID INTEGER NOT NULL,
     Currency CHAR(3) NOT NULL,
     PRIMARY KEY (TransactionID),
-    FOREIGN KEY (TransactionID) REFERENCES TransactionIDUserID(TransactionID)
+    FOREIGN KEY (TransactionID) REFERENCES TransactionIDUserID(TransactionID) ON DELETE CASCADE
 );
 
 -- TransactionIDExchangeRate Table
@@ -197,7 +240,7 @@ CREATE TABLE TransactionIDExchangeRate (
     TransactionID INTEGER NOT NULL,
     ExchangeRate INTEGER NOT NULL,
     PRIMARY KEY (TransactionID),
-    FOREIGN KEY (TransactionID) REFERENCES TransactionIDUserID(TransactionID)
+    FOREIGN KEY (TransactionID) REFERENCES TransactionIDUserID(TransactionID) ON DELETE CASCADE
 );
 
 -- CurrencyExchangeRate Table
@@ -205,16 +248,21 @@ CREATE TABLE CurrencyExchangeRate (
     Currency CHAR(3) NOT NULL PRIMARY KEY,
     ExchangeRate INTEGER NOT NULL
 );
-
 CREATE SEQUENCE DataRequest_seq
-    START WITH 5 --default adds 5
+    START WITH 6 --default starts with 6 since we have 5 already
     INCREMENT BY 1
     NOCACHE;
 
 CREATE SEQUENCE User_seq
-    START WITH 5 --default adds 5
+    START WITH 6 --default starts with 6 since we have 5 already
     INCREMENT BY 1
     NOCACHE;
+
+CREATE SEQUENCE TransactionID_seq
+    START WITH 6 --default starts with 6 since we have 5 already
+    INCREMENT BY 1
+    NOCACHE;
+
 
 --Table population process
 -----------------------------------------------------------------------
@@ -340,10 +388,10 @@ INSERT INTO DataCategory (CategoryID, CategoryName, Description) VALUES (5, 'Env
 --updated DataRequest
 -- DataRequest table
 INSERT INTO DataRequest (DataRequestID, CompanyID, Compensation, DataPurpose, CategoryID, Status) VALUES (1, 1, 1000.00, 'Market Research', 1, 'Pending');
-INSERT INTO DataRequest (DataRequestID, CompanyID, Compensation, DataPurpose, CategoryID, Status) VALUES (2, 2, 1500.00, 'Clinical Study', 1,'Approved');
+INSERT INTO DataRequest (DataRequestID, CompanyID, Compensation, DataPurpose, CategoryID, Status) VALUES (2, 2, 1500.00, 'Clinical Study', 1,'Pending');
 INSERT INTO DataRequest (DataRequestID, CompanyID, Compensation, DataPurpose, CategoryID, Status) VALUES (3, 3, 500.00, 'Educational Analysis', 1,'Pending');
-INSERT INTO DataRequest (DataRequestID, CompanyID, Compensation, DataPurpose, CategoryID, Status) VALUES (4, 4, 2000.00, 'Financial Forecast', 1,'Rejected');
-INSERT INTO DataRequest (DataRequestID, CompanyID, Compensation, DataPurpose, CategoryID, Status) VALUES (5, 5, 1200.00, 'Environmental Impact Study', 1,'Approved');
+INSERT INTO DataRequest (DataRequestID, CompanyID, Compensation, DataPurpose, CategoryID, Status) VALUES (4, 4, 2000.00, 'Financial Forecast', 1,'Pending');
+INSERT INTO DataRequest (DataRequestID, CompanyID, Compensation, DataPurpose, CategoryID, Status) VALUES (5, 5, 1200.00, 'Environmental Impact Study', 1,'Pending');
 
 -- DataBelongCategory table
 INSERT INTO DataBelongCategory (CategoryID, DataRequestID, CompanyID) VALUES (1, 1, 1);
@@ -353,11 +401,11 @@ INSERT INTO DataBelongCategory (CategoryID, DataRequestID, CompanyID) VALUES (4,
 INSERT INTO DataBelongCategory (CategoryID, DataRequestID, CompanyID) VALUES (5, 5, 5);
 
 -- TransactionIDUserID table
-INSERT INTO TransactionIDUserID (TransactionID, UserID) VALUES (1, 1);
-INSERT INTO TransactionIDUserID (TransactionID, UserID) VALUES (2, 2);
-INSERT INTO TransactionIDUserID (TransactionID, UserID) VALUES (3, 3);
-INSERT INTO TransactionIDUserID (TransactionID, UserID) VALUES (4, 4);
-INSERT INTO TransactionIDUserID (TransactionID, UserID) VALUES (5, 5);
+INSERT INTO TransactionIDUserID (TransactionID, UserID, DataText) VALUES (1, 1, 'Testing upload data request');
+INSERT INTO TransactionIDUserID (TransactionID, UserID, DataText) VALUES (2, 2,'Testing upload data request');
+INSERT INTO TransactionIDUserID (TransactionID, UserID, DataText) VALUES (3, 3,'Testing upload data request');
+INSERT INTO TransactionIDUserID (TransactionID, UserID, DataText) VALUES (4, 4,'Testing upload data request');
+INSERT INTO TransactionIDUserID (TransactionID, UserID, DataText) VALUES (5, 5,'Testing upload data request');
 
 -- TransactionIDDataRequestID table
 INSERT INTO TransactionIDDataRequestID (TransactionID, DataRequestID) VALUES (1, 1);
@@ -400,3 +448,6 @@ INSERT INTO CurrencyExchangeRate (Currency, ExchangeRate) VALUES ('EUR', 0.90);
 INSERT INTO CurrencyExchangeRate (Currency, ExchangeRate) VALUES ('GBP', 0.80);
 INSERT INTO CurrencyExchangeRate (Currency, ExchangeRate) VALUES ('JPY', 110.00);
 INSERT INTO CurrencyExchangeRate (Currency, ExchangeRate) VALUES ('CAD', 1.30);
+
+COMMIT;
+/

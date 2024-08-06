@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Influxity</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/beercss@3.6.12/dist/cdn/beer.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.6.12/dist/cdn/beer.min.js"></script>
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
+
+</head>
+
+<body>
+    <section class="signup">
+        <h2>Sign Up</h2>
+        <form id="signup-form" action="../backend/signup_process.php" method="POST">
+            <div class="field label round border small">
+                <input type="text" name="username" required>
+                <label>User Name</label>
+            </div>
+            <div class="field label round border small">
+                <input type="email" name="email" required>
+                <label>Email</label>
+            </div>
+            <div class="field label round border small">
+                <input type="password" name="password" required>
+                <label>Password</label>
+            </div>
+            <div class="field label suffix small round border">
+                <select id="userType" name="userType" required>
+                    <option value="">Select Account Type</option>
+                    <option value="individual">Individual</option>
+                    <option value="corporate">Corporate</option>
+                </select>
+                <label>Account</label>
+                <i>arrow_drop_down</i>
+            </div>
+
+            <div class="field label round border small" id="individualFields" style="display:none;">
+                <div class="field label round border small">
+                    <input type="text" name="firstName">
+                    <label>First Name</label>
+                </div>
+                <div class="field label round border small">
+                    <input type="text" name="lastName">
+                    <label>Last Name</label>
+                </div>
+                <div class="field label prefix round border small">
+                    <i>today</i>
+                    <input type="date" name="dob">
+                    <label>Date of Birth</label>
+                </div>
+            </div>
+
+            <div class="field label round border small" id="corporateFields" style="display:none;">
+                <div class="field label round border small">
+                    <input type="text" name="companyName">
+                    <label>Company Name</label>
+                </div>
+                <div class="field label round border small">
+                    <input type="text" name="industry">
+                    <label>Industry</label>
+                </div>
+                <div class="field label round border small">
+                    <input type="text" name="companySize">
+                    <label>Company Size</label>
+                </div>
+            </div>
+            <button type="submit" class="extend square  large-elevate">
+                <i>arrow_forward</i>
+                <span>Sign up</span></button>
+        </form>
+        <a href="index.html" class="button extend square large-elevate">
+            <i>home</i>
+            <span>Home</span>
+        </a>
+    </section>
+
+    <script>
+        document.getElementById('userType').addEventListener('change', function () {
+            var individualFields = document.getElementById('individualFields');
+            var corporateFields = document.getElementById('corporateFields');
+            if (this.value === 'individual') {
+                individualFields.style.display = 'block';
+                corporateFields.style.display = 'none';
+            } else if (this.value === 'corporate') {
+                individualFields.style.display = 'none';
+                corporateFields.style.display = 'block';
+            } else {
+                individualFields.style.display = 'none';
+                corporateFields.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In - Influxity</title>
+    <link href="https://cdn.jsdelivr.net/npm/beercss@3.6.12/dist/cdn/beer.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.6.12/dist/cdn/beer.min.js"></script>
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
+</head>
+
+<body>
+    <section class="login">
+        <h2>Log In</h2>
+        <form id="login-form" action="../backend/login_process.php" method="POST">
+            <div class="field label round border small">
+                <input type="email" name="email" required>
+                <label>Email</label>
+            </div>
+            <div class="field label round border small">
+                <input type="password" name="password" required>
+                <label>Password</label>
+            </div>
+
+            <button type="submit" class="extend square  large-elevate">
+                <i>arrow_forward</i>
+                <span>Log in</span></button>
+        </form>
+        <a href="index.html" class="button extend square large-elevate">
+            <i>home</i>
+            <span>Home</span>
+        </a>
+    </section>
+</body>
+
+</html>

@@ -199,7 +199,7 @@ function updateSubmittedDataHistory(submittedDataHistory) {
             item.COMPANYNAME,
             item.DATAPURPOSE,
             item.STATUS,
-            item.COMPENSATION || '-' // this might've been causing NULL outputs I think
+            item.COMPENSATION || '-' // Display '-' if no compensation
         ].forEach(value => {
             const cell = row.insertCell();
             cell.textContent = value;

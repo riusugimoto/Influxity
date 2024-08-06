@@ -64,7 +64,7 @@ async function fetchCompanyDashboardData() {
 
         updateUserData(data.transactions || []);
         updateDataRequests(data.data_requests || []);
-        updateMetrics(data.data_requests.length, data.transactions.length, calculateTotalCompensation(data.compensations));
+        updateMetrics(data.data_requests.length, data.transactions.length, data.total_compensation);
     } catch (error) {
         console.error('Fetch error:', error);
     }
@@ -115,9 +115,35 @@ function updateDataRequests(dataRequests) {
             <td>${request.DATAPURPOSE}</td>
             <td>${request.COMPENSATION}</td>
             <td>${request.CATEGORYNAME}</td>
+            <td><button class="delete-request btn" data-request-id="${request.DATAREQUESTID}">Delete</button></td> 
         `;
     });
 }
+
+dataRequestsTable.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('delete-request')) {
+        event.preventDefault();
+        const dataRequestId = event.target.dataset.requestId;
+
+        try {
+            const response = await fetch('../backend/delete_data_request.php', {
+                method: 'POST',
+                body: new URLSearchParams({ dataRequestId }),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            });
+            console.log('Parsed data:', data);
+            if (response.ok) {
+                fetchCompanyDashboardData(); // Refresh the dashboard
+            } else {
+                console.error('Error deleting data request:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error deleting data request:', error);
+        }
+    }
+});
 
 function updateMetrics(activeDataRequestsCount, reviewedDataCount, totalCompensation) {
     document.getElementById('active-data-requests-count').textContent = activeDataRequestsCount;
@@ -125,6 +151,4 @@ function updateMetrics(activeDataRequestsCount, reviewedDataCount, totalCompensa
     document.getElementById('total-compensation').textContent = `$${totalCompensation}`;
 }
 
-function calculateTotalCompensation(compensations) {
-    return compensations.reduce((total, comp) => total + parseFloat(comp.AMOUNT), 0).toFixed(2);
-}
+//removed calculateTotalCompensation because it was redundant and I hated it :).

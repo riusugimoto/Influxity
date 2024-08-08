@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Influxity</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <nav>
         <h1>Influxity</h1>
         <ul>
             <li><a href="#" onclick="viewAllData()">View All Data</a></li>
-
-
             <li>
                 <select id="searchKeyDropdown">
                     <option value="">Select Key</option>
@@ -28,12 +28,9 @@
                     <option value="ReportID">ReportID</option>
                     <option value="Currency">Currency</option>
                     <option value="Review">Review</option>
-                    
                 </select>
                 <button onclick="searchByKey()">OK</button>
             </li>
-
-
             <li>
                 <select id="completeDataDropdown">
                     <option value="usersCompleteData">Users with Data in all categories</option>
@@ -41,20 +38,11 @@
                 </select>
                 <button onclick="searchCompleteData()">OK</button>
             </li>
-
-
             <li>
-            <button onclick="viewTotalRequestsPerCategory()">Total Data Requests per Category</button>
+                <button onclick="viewTotalRequestsPerCategory()">Total Data Requests per Category</button>
             </li>
-
-
-
-
         </ul>
     </nav>
-
-
-
 
     <section id="content-section">
         <h2>Admin Dashboard</h2>
@@ -63,4 +51,5 @@
 
     <script src="admin_scripts.js"></script>
 </body>
+
 </html>

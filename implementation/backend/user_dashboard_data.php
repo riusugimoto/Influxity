@@ -1,19 +1,16 @@
 <?php
 // Enable error reporting
+include "db_auth.php";
+// Enable error reporting
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Connect to Oracle database
+$conn = db_log_in();
+
 //there is prob a better way of doing this, but idk what that way is.. so here we are.
 header('Content-Type: application/json');
-
-// Database connection details
-$username = "ora_nanrey";
-$password = "a22597249";
-$connection_string = "dbhost.students.cs.ubc.ca:1522/stu";
-
-// Connect to Oracle database
-$conn = oci_connect($username, $password, $connection_string);
 
 if (!$conn) {
     $e = oci_error();

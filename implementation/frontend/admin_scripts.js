@@ -1,10 +1,8 @@
-
-
-
+// admin_scripts.js
 
 function viewAllData() {
     console.log('viewAllData function called');
-    fetch('../backend/view_all_data.php')
+    fetch('../backend/admin_dashboard.php?action=viewAllData')
         .then(response => response.json())
         .then(data => {
             console.log('Data fetched:', data);
@@ -18,12 +16,6 @@ function viewAllData() {
         .catch(error => console.error('Error fetching data:', error));
 }
 
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 function searchByKey() {
     const key = document.getElementById('searchKeyDropdown').value;
     if (!key) {
@@ -31,9 +23,9 @@ function searchByKey() {
         return;
     }
     console.log('searchByKey function called with key:', key);
-    
+
     // Fetch data from the backend
-    fetch(`../backend/search_by_key.php?key=${key}`)
+    fetch(`../backend/admin_dashboard.php?action=searchByKey&key=${key}`)
         .then(response => {
             console.log('Response received:', response);
             return response.json();
@@ -50,21 +42,18 @@ function searchByKey() {
         .catch(error => console.error('Error fetching data:', error));
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 function searchCompleteData() {
     const selectedOption = document.getElementById('completeDataDropdown').value;
-    let fetchUrl = '';
+    let type = '';
 
     if (selectedOption === 'usersCompleteData') {
-        fetchUrl = '../backend/users_with_complete_data.php';
+        type = 'usersCompleteData';
     } else if (selectedOption === 'companiesAllCategories') {
-        fetchUrl = '../backend/companies_with_all_categories.php';
+        type = 'companiesAllCategories';
     }
 
-    if (fetchUrl) {
-        fetch(fetchUrl)
+    if (type) {
+        fetch(`../backend/admin_dashboard.php?action=searchCompleteData&type=${type}`)
             .then(response => response.json())
             .then(data => {
                 console.log('Data fetched:', data);
@@ -77,24 +66,15 @@ function searchCompleteData() {
     }
 }
 
-
-
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 function viewTotalRequestsPerCategory() {
-    console.log('viewTotalRequestsPerCategory function called'); 
-    fetch('../backend/view_total_requests_per_category.php')
+    console.log('viewTotalRequestsPerCategory function called');
+    fetch('../backend/admin_dashboard.php?action=viewTotalRequestsPerCategory')
         .then(response => {
-            console.log('Response received:', response); 
+            console.log('Response received:', response);
             return response.json();
         })
         .then(data => {
-            console.log('Data fetched:', data); 
+            console.log('Data fetched:', data);
             const contentSection = document.getElementById('content-section');
             contentSection.innerHTML = '<h2>Total Data Requests per Category</h2>';
             const tableHTML = generateTableHTML(data);
@@ -102,10 +82,6 @@ function viewTotalRequestsPerCategory() {
         })
         .catch(error => console.error('Error fetching data:', error));
 }
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 function generateTableHTML(data) {
     let html = '<table border="1"><tr>';

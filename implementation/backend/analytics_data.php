@@ -1,16 +1,13 @@
 <?php
+include "db_auth.php";
 // Enable error reporting
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Database connection details
-$username = "ora_nanrey";
-$password = "a22597249";
-$connection_string = "dbhost.students.cs.ubc.ca:1522/stu";
 
 // Connect to Oracle database
-$conn = oci_connect($username, $password, $connection_string);
+$conn = db_log_in();
 if (!$conn) {
     $e = oci_error();
     echo json_encode(['error' => htmlentities($e['message'], ENT_QUOTES)]);

@@ -1,16 +1,13 @@
 <?php
+include "db_auth.php";
 // Enable error reporting
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 
-$username = "ora_nanrey";
-$password = "a22597249";
-$connection_string = "dbhost.students.cs.ubc.ca:1522/stu";
-
-
-$conn = oci_connect($username, $password, $connection_string);
+// Connect to Oracle database
+$conn = db_log_in();
 
 if (!$conn) {
     $e = oci_error();

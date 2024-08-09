@@ -1,7 +1,3 @@
-document.addEventListener('DOMContentLoaded', () => {
-    fetchReviewedUserData();
-});
-
 async function fetchReviewedUserData() {
     const url = `../backend/analytics_data.php`;
 

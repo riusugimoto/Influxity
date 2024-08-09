@@ -282,7 +282,7 @@ CREATE SEQUENCE DataRequest_seq
     NOCACHE;
 
 CREATE SEQUENCE User_seq
-    START WITH 10 --default starts with 6 since we have 5 already
+    START WITH 11 --default starts with 11 since we have 10 already
     INCREMENT BY 1
     NOCACHE;
 
@@ -530,10 +530,10 @@ INSERT INTO CurrencyExchangeRate (Currency, ExchangeRate) VALUES ('JPY', 110.00)
 INSERT INTO CurrencyExchangeRate (Currency, ExchangeRate) VALUES ('CAD', 1.30);
 
 INSERT INTO Review (ReviewID, TransactionID, UserID, Status, Compensation) VALUES (1, 1, 1, 'Accepted', 500.00);
-INSERT INTO Review (ReviewID, TransactionID, UserID, Status, Compensation) VALUES (2, 2, 2, 'Accepted', 1500.00);
-INSERT INTO Review (ReviewID, TransactionID, UserID, Status, Compensation) VALUES (3, 3, 3, 'Rejected', 0.00);
-INSERT INTO Review (ReviewID, TransactionID, UserID, Status, Compensation) VALUES (4, 4, 4, 'Accepted', 3500.00);
-INSERT INTO Review (ReviewID, TransactionID, UserID, Status, Compensation) VALUES (5, 5, 5, 'Rejected', 0.00);
+INSERT INTO Review (ReviewID, TransactionID, UserID, Status, Compensation) VALUES (2, 2, 2, 'Pending', 1500.00);
+INSERT INTO Review (ReviewID, TransactionID, UserID, Status, Compensation) VALUES (3, 3, 3, 'Pending', 0.00);
+INSERT INTO Review (ReviewID, TransactionID, UserID, Status, Compensation) VALUES (4, 4, 4, 'Pending', 3500.00);
+INSERT INTO Review (ReviewID, TransactionID, UserID, Status, Compensation) VALUES (5, 5, 5, 'Pending', 0.00);
 
 COMMIT;
 /

@@ -1,7 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.querySelector('.menu-toggle');
     const dataRequestForm = document.getElementById('dataRequestForm');
     const dataCategoryFilter = document.getElementById('dataCategoryFilter');
     const userSearch = document.getElementById('userSearch');
+    const navLinks = document.querySelector('.nav-links');
+    const showAnalyticsLink = document.getElementById('showAnalytics');
+    const analyticsSection = document.getElementById('analyticsSection');
+ 
+    
+    if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    }
 
     if (dataCategoryFilter) {
         dataCategoryFilter.addEventListener('change', fetchCompanyDashboardData);
@@ -24,25 +35,42 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: formData
                 });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                const result = await response.text();
+
+                try {
+                    const jsonResult = JSON.parse(result);
+                    console.log('Form submission response:', jsonResult);
+                    alert(jsonResult.message || 'Form submitted successfully');
+                } catch (e) {
+                    console.error('Error parsing JSON response:', e);
                 }
 
-                const result = await response.text();
-                console.log('Form submission response:', result);
-                alert(result);
                 fetchCompanyDashboardData();
             } catch (error) {
                 console.error('Error submitting data request:', error);
                 alert(`An error occurred while submitting the data request: ${error.message}`);
             }
         };
+    }   
+
+    if (showAnalyticsLink) {
+        showAnalyticsLink.addEventListener('click', () => { //idk why this works; if I remove it, thne then data does not refresh..... 
+            if (analyticsSection.style.display === 'none' || analyticsSection.style.display === '') {
+                
+                analyticsSection.style.display = 'block'; 
+            } else {
+                analyticsSection.style.display = 'none'; 
+            }
+            if (analyticsSection.style.display === 'block') {
+                fetchReviewedUserData();
+            }
+        });
     }
+        
 });
 
 async function fetchCompanyDashboardData() {
     const url = `../backend/company_dashboard_data.php`;
-
     console.log(`Fetching data from URL: ${url}`);
 
     try {
@@ -54,19 +82,74 @@ async function fetchCompanyDashboardData() {
             throw new Error(`Network response was not ok: ${response.statusText}`);
         }
 
-        const data = JSON.parse(rawText);
-        console.log('Parsed data:', data);
+        try {
+            const data = JSON.parse(rawText);
+            console.log('Parsed data:', data);
 
-        if (data.error) {
-            console.error('Data error:', data.error);
-            throw new Error(data.error);
+            if (data.error) {
+                console.error('Data error:', data.error);
+                throw new Error(data.error);
+            }
+
+            updateUserData(data.transactions || []);
+            updateDataRequests(data.data_requests || []);
+            updateMetrics(data.data_requests.length, data.transactions.length, data.total_compensation);
+            attachDeleteRequestEventListeners();
+        } catch (e) {
+            console.error('Error parsing JSON:', e);
+            console.error('Response text:', rawText);
+            throw new Error('Invalid JSON response');
         }
-
-        updateUserData(data.transactions || []);
-        updateDataRequests(data.data_requests || []);
-        updateMetrics(data.data_requests.length, data.transactions.length, data.total_compensation);
+    
     } catch (error) {
         console.error('Fetch error:', error);
+    }
+}
+
+function attachDeleteRequestEventListeners() { //added new function to remove event handler cuz otherwise we got duplicate reposnses for each.
+    const dataRequestsTable = document.getElementById('dataRequestsTable');
+
+    if (dataRequestsTable) {
+        const deleteButtons = dataRequestsTable.querySelectorAll('.delete-request');
+        deleteButtons.forEach(button => {
+            button.removeEventListener('click', handleDeleteRequest);
+            button.addEventListener('click', handleDeleteRequest);
+        });
+    }
+}
+
+async function handleDeleteRequest(event) {
+    event.preventDefault();
+    const DataRequestID = event.target.dataset.requestId;
+
+    try {
+        const response = await fetch('../backend/delete_data_request.php', {
+            method: 'POST',
+            body: new URLSearchParams({ DataRequestID }),
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        });
+        const result = await response.text();
+
+        try {
+            const data = JSON.parse(result);
+            console.log('Parsed data:', data);
+            if (response.ok) {
+                alert('Data request deleted successfully');
+                location.reload(); // Refresh the page after deletion
+            } else {
+                console.error('Error deleting request:', response.statusText);
+                alert('Error deleting request');
+            }
+        } catch (e) {
+            console.error('Error parsing JSON response:', e);
+            console.error('Response text:', result);
+            alert('An error occurred while processing the response.');
+        }
+    } catch (error) {
+        console.error('Error deleting data request:', error);
+        alert(`An error occurred while deleting the data request: ${error.message}`);
     }
 }
 
@@ -120,35 +203,8 @@ function updateDataRequests(dataRequests) {
     });
 }
 
-dataRequestsTable.addEventListener('click', async (event) => {
-    if (event.target.classList.contains('delete-request')) {
-        event.preventDefault();
-        const dataRequestId = event.target.dataset.requestId;
-
-        try {
-            const response = await fetch('../backend/delete_data_request.php', {
-                method: 'POST',
-                body: new URLSearchParams({ dataRequestId }),
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-            });
-            console.log('Parsed data:', data);
-            if (response.ok) {
-                fetchCompanyDashboardData(); // Refresh the dashboard
-            } else {
-                console.error('Error deleting data request:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error deleting data request:', error);
-        }
-    }
-});
-
 function updateMetrics(activeDataRequestsCount, reviewedDataCount, totalCompensation) {
     document.getElementById('active-data-requests-count').textContent = activeDataRequestsCount;
     document.getElementById('reviewed-data-count').textContent = reviewedDataCount;
     document.getElementById('total-compensation').textContent = `$${totalCompensation}`;
 }
-
-//removed calculateTotalCompensation because it was redundant and I hated it :).

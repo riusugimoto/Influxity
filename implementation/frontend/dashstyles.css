@@ -78,7 +78,7 @@ body {
     backdrop-filter: blur(0%) invert(0%);
     //mix-blend-mode: overlay;
     animation: gradientBackground 40s ease infinite;
-    
+    //z-index: 1;
 
 }
 
@@ -137,35 +137,37 @@ body {
     color: #ff4081;
 }
 
-.data-section {
-    mix-blend-mode: luminosity;
+.data-section, .data-request-section {
+    mix-blend-mode: multiply;
     padding: 20px;
     border-radius: 20px;
-    filter: invert(100%) blur(0px);
-    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: invert(0%) blur(100px);
+    background: rgba(0, 0, 0, 0.9);
     border: solid;
     font-weight: bold;
-    border-color: rgba(255, 255, 255, 0.8);
-    color: rgba(0, 0, 0, 1);
-    text-shadow: 0px 0px 30px rgba(255, 255, 255, 0.1);
-    box-shadow: 0px 0px 30px rgba(255, 255, 255, 0.2);
+    border-color: rgba(0, 0, 0, 1);
+    border-width: 10px;
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 0px 0px 30px rgba(255, 255, 255, 0.3);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 1);
 }
 
-.data-section h2 {
-    margin: 0 0 20px;
-    font-size: 4em;
-    text-decoration: underline;
-    //text-underline-position: under;
-}
+.data-section h2, .data-request-section h2 {
+    display: flex;
+    justify-content: center;
+    //text-decoration: underline 2px;
+    color: rgba(255, 255, 255, 1);
+    border: solid;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    text-shadow: 0px 0px 30px rgba(255, 255, 255, 0.5);
+    box-shadow: 0px 0px 30px rgba(255, 255, 255, 0.5);
+    border-color: rgba(255, 255, 255, 0.5);
+}   
 
 .controls {
+    mix-blend-mode: luminosity;
     margin-bottom: 20px;
-}
-
-.controls select {
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
 }
 
 
@@ -173,12 +175,13 @@ table {
     width: 100%;
     //border-collapse: collapse;
     margin-bottom: 20px;
-    mix-blend-mode: overlay;
+    mix-blend-mode: luminosity;
     //border: none;
     //border-width:10px;
     border: solid;
     border-radius: 10px;
 }
+
 
 table th, table td {
     //padding: 15px;

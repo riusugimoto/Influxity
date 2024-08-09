@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Company Dashboard - Influxity</title>
+    <link href="https://cdn.jsdelivr.net/npm/beercss@3.6.12/dist/cdn/beer.min.css" rel="stylesheet">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.6.12/dist/cdn/beer.min.js"></script>
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
     <link rel="stylesheet" href="dashstyles.css">
 </head>
+
 <body>
     <div class="dashboard-container">
         <nav class="sidebar">
             <div class="logo">Influxity</div>
             <ul>
                 <li><a href="#" class="active"><dashboard-icon></dashboard-icon>Dashboard</a></li>
-                <li><a href="analytics.html"><analytics-icon></analytics-icon>Analytics</a></li>
+                <li><a href="#" id="showAnalytics"><analytics-icon></analytics-icon>Analytics</a></li>
                 <li><a href="#"><messages-icon></messages-icon>Messages</a></li>
                 <li><a href="#"><collections-icon></collections-icon>Collections</a></li>
                 <li><a href="#"><users-icon></users-icon>Users</a></li>
@@ -43,9 +49,29 @@
                     <p id="total-compensation">$0</p>
                 </div>
             </section>
+
+            <section class="data-section" id="analyticsSection" style="display: none;">
+                <h2>User Analytics</h2>
+                <table id="reviewedUserDataTable">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Data Text</th>
+                            <th>Data Purpose</th>
+                            <th>Category</th>
+                            <th>Requested Compensation</th>
+                            <th>Status</th>
+                            <th>Offered Compensation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </section>
+
             <section class="data-section">
                 <h2>Submitted User Data</h2>
-                <div class="controls">
+                <div class="field label suffix border round small controls">
                     <select id="dataCategoryFilter">
                         <option value="">All Categories</option>
                         <option value="Demographics">Demographics</option>
@@ -54,6 +80,8 @@
                         <option value="Finance">Finance</option>
                         <option value="Environment">Environment</option>
                     </select>
+                    <label>Category</label>
+                    <i>arrow_drop_down</i>
                 </div>
                 <table id="userDataTable">
                     <thead>
@@ -73,18 +101,35 @@
             </section>
             <section class="data-request-section">
                 <h2>Submit New Data Request</h2>
-                <form id="dataRequestForm" action="../backend/submit_data_request.php" method="POST">
-                    <input type="text" name="dataPurpose" placeholder="Data Purpose" required>
-                    <input type="number" name="compensation" placeholder="Compensation" required>
-                    <select name="categoryID" required>
-                        <option value="">Select Category</option>
-                        <option value="1">Demographics</option>
-                        <option value="2">Health</option>
-                        <option value="3">Education</option>
-                        <option value="4">Finance</option>
-                        <option value="5">Environment</option>
-                    </select>
-                    <button type="submit" class="btn">Submit Data Request</button>
+                <form class="dataRequestForm" id="dataRequestForm" action="../backend/submit_data_request.php"
+                    method="POST">
+
+                    <div class="field label round border small">
+                        <input type="text" name="dataPurpose" placeholder="" required>
+                        <label>Enter Data Purpose</label>
+                    </div>
+                    <div class="field label prefix round border small">
+                        <i>&#128178;</i>
+                        <input type="number" name="compensation" placeholder="" required>
+                        <label>Enter Compensation Amount</label>
+                    </div>
+                    <div class="field label suffix border round small">
+                        <select name="categoryID" required>
+                            <option value="">Select Category</option>
+                            <option value="1">Demographics</option>
+                            <option value="2">Health</option>
+                            <option value="3">Education</option>
+                            <option value="4">Finance</option>
+                            <option value="5">Environment</option>
+                        </select>
+                        <label>Category</label>
+                        <i>arrow_drop_down</i>
+                    </div>
+                    <button id="btn" type="submit" class="extend square round large-elevate">
+                        <i>check</i>
+                        <span>Submit</span>
+                    </button>
+
                 </form>
                 <table id="dataRequestsTable">
                     <thead>
@@ -92,7 +137,7 @@
                             <th>Data Purpose</th>
                             <th>Compensation</th>
                             <th>Category</th>
-                            <th>Action</th> <script src="company_dash_scripts.js"></script>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -103,6 +148,9 @@
         </div>
     </div>
 
+    <!-- Moved scripts to the end of the body to ensure elements are loaded before scripts run -->
     <script src="company_dash_scripts.js"></script>
+    <script src="analytics_scripts.js"></script>
 </body>
+
 </html>

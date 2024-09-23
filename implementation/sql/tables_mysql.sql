@@ -1,0 +1,275 @@
+-- Disable foreign key checks
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- Drop tables if they exist
+DROP TABLE IF EXISTS TRANSACTIONIDEXCHANGERATE;
+DROP TABLE IF EXISTS TRANSACTIONIDCURRENCY;
+DROP TABLE IF EXISTS TRANSACTIONIDTIMESTAMP;
+DROP TABLE IF EXISTS TRANSACTIONIDAMOUNT;
+DROP TABLE IF EXISTS TRANSACTIONIDDATAREQUESTID;
+DROP TABLE IF EXISTS TRANSACTIONIDUSERID;
+DROP TABLE IF EXISTS DATABELONGCATEGORY;
+DROP TABLE IF EXISTS DATACATEGORY;
+DROP TABLE IF EXISTS DATAREQUEST;
+DROP TABLE IF EXISTS COMPANY;
+DROP TABLE IF EXISTS USERGENERATEDREPORTDETAILS;
+DROP TABLE IF EXISTS REPORTGENERATEDON;
+DROP TABLE IF EXISTS TRANSPARENCYREPORT;
+DROP TABLE IF EXISTS USERACTIVITYDETAILS;
+DROP TABLE IF EXISTS USERACTIVITYTYPE;
+DROP TABLE IF EXISTS ACTIVITYTIMESTAMP;
+DROP TABLE IF EXISTS ACTIVITY;
+DROP TABLE IF EXISTS COMPANYNAMESIZE;
+DROP TABLE IF EXISTS COMPANYNAMEINDUSTRY;
+DROP TABLE IF EXISTS CORPORATEUSER;
+DROP TABLE IF EXISTS INDIVIDUALUSERNAME;
+DROP TABLE IF EXISTS INDIVIDUALUSER;
+DROP TABLE IF EXISTS USEREMAILPASSWORD;
+DROP TABLE IF EXISTS USEREMAILUSERNAME;
+DROP TABLE IF EXISTS USERS;
+DROP TABLE IF EXISTS REVIEW;
+
+-- Re-enable foreign key checks
+SET FOREIGN_KEY_CHECKS = 1;
+
+DROP TABLE IF EXISTS TRANSACTIONIDEXCHANGERATE;
+DROP TABLE IF EXISTS TRANSACTIONIDCURRENCY;
+DROP TABLE IF EXISTS TRANSACTIONIDTIMESTAMP;
+DROP TABLE IF EXISTS TRANSACTIONIDAMOUNT;
+DROP TABLE IF EXISTS TRANSACTIONIDDATAREQUESTID;
+-- Now drop TRANSACTIONIDUSERID since dependent tables are removed
+DROP TABLE IF EXISTS TRANSACTIONIDUSERID;
+
+
+DROP TABLE IF EXISTS CurrencyExchangeRate;
+
+
+-- Users Table
+CREATE TABLE Users (
+    UserID INTEGER PRIMARY KEY,
+    Email VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- UserEmailUsername Table
+CREATE TABLE UserEmailUsername (
+    Email VARCHAR(255) PRIMARY KEY,
+    Username VARCHAR(255) NOT NULL,
+    FOREIGN KEY (Email) REFERENCES Users(Email) ON DELETE CASCADE
+);
+
+-- UserEmailPassword Table
+CREATE TABLE UserEmailPassword (
+    Email VARCHAR(255) PRIMARY KEY,
+    Password VARCHAR(255) NOT NULL,
+    FOREIGN KEY (Email) REFERENCES Users(Email) ON DELETE CASCADE
+);
+
+-- IndividualUser Table
+CREATE TABLE IndividualUser (
+    UserID INTEGER PRIMARY KEY,
+    FirstName VARCHAR(50) NOT NULL,
+    LastName VARCHAR(50) NOT NULL,
+    DateOfBirth DATE NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+
+-- IndividualUserName Table
+CREATE TABLE IndividualUserName (
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    DateOfBirth DATE,
+    UserID INTEGER,
+    PRIMARY KEY (FirstName, LastName, DateOfBirth),
+    FOREIGN KEY (UserID) REFERENCES IndividualUser(UserID) ON DELETE CASCADE
+);
+
+-- CorporateUser Table
+CREATE TABLE CorporateUser (
+    UserID INTEGER PRIMARY KEY,
+    CompanyName VARCHAR(100) NOT NULL UNIQUE,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+
+-- CompanyNameIndustry Table
+CREATE TABLE CompanyNameIndustry (
+    CompanyName VARCHAR(100) NOT NULL,
+    Industry VARCHAR(50) NOT NULL,
+    FOREIGN KEY (CompanyName) REFERENCES CorporateUser(CompanyName) ON DELETE CASCADE
+);
+
+-- CompanyNameSize Table
+CREATE TABLE CompanyNameSize (
+    CompanyName VARCHAR(100) PRIMARY KEY,
+    CompanySize VARCHAR(20) NOT NULL,
+    FOREIGN KEY (CompanyName) REFERENCES CorporateUser(CompanyName) ON DELETE CASCADE
+);
+
+-- Activity Table
+CREATE TABLE Activity (
+    ActivityID INTEGER PRIMARY KEY,
+    UserID INTEGER NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+
+-- ActivityTimestamp Table
+CREATE TABLE ActivityTimestamp (
+    ActivityID INTEGER PRIMARY KEY,
+    Timestamp DATETIME NOT NULL,
+    FOREIGN KEY (ActivityID) REFERENCES Activity(ActivityID) ON DELETE CASCADE
+);
+
+-- UserActivityType Table
+CREATE TABLE UserActivityType (
+    UserID INTEGER,
+    Timestamp DATETIME,
+    ActivityType VARCHAR(50) NOT NULL,
+    PRIMARY KEY (UserID, Timestamp),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+
+-- UserActivityDetails Table
+CREATE TABLE UserActivityDetails (
+    UserID INTEGER,
+    Timestamp DATETIME,
+    ActivityDetails TEXT,
+    PRIMARY KEY (UserID, Timestamp),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+
+-- TransparencyReport Table
+CREATE TABLE TransparencyReport (
+    ReportID INTEGER PRIMARY KEY,
+    UserID INTEGER NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+
+-- ReportGeneratedOn Table
+CREATE TABLE ReportGeneratedOn (
+    ReportID INTEGER PRIMARY KEY,
+    GeneratedOn DATETIME NOT NULL,
+    FOREIGN KEY (ReportID) REFERENCES TransparencyReport(ReportID) ON DELETE CASCADE
+);
+
+-- UserGeneratedReportDetails Table
+CREATE TABLE UserGeneratedReportDetails (
+    UserID INTEGER,
+    GeneratedOn DATETIME,
+    ReportDetails TEXT,
+    PRIMARY KEY (UserID, GeneratedOn),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+
+-- Company Table
+CREATE TABLE Company (
+    CompanyID INT PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL UNIQUE,
+    Industry VARCHAR(255) NOT NULL,
+    ContactInfo VARCHAR(255) NOT NULL,
+    FOREIGN KEY (Name) REFERENCES CorporateUser(CompanyName) ON DELETE CASCADE
+);
+
+-- DataCategory Table
+CREATE TABLE DataCategory (
+    CategoryID INT PRIMARY KEY,
+    CategoryName VARCHAR(255) NOT NULL UNIQUE,
+    Description TEXT NOT NULL
+);
+
+-- DataRequest Table
+CREATE TABLE DataRequest (
+    DataRequestID INT PRIMARY KEY,
+    CompanyID INT,
+    Compensation DECIMAL(10, 2) NOT NULL,
+    DataPurpose VARCHAR(255) NOT NULL, 
+    CategoryID INT NOT NULL,
+    Status VARCHAR(50) NOT NULL,
+    FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID) ON DELETE CASCADE,
+    FOREIGN KEY (CategoryID) REFERENCES DataCategory(CategoryID) ON DELETE CASCADE
+);
+
+-- DataBelongCategory Table
+CREATE TABLE DataBelongCategory (
+    CategoryID INT NOT NULL,
+    DataRequestID INT,
+    CompanyID INT,
+    PRIMARY KEY (CategoryID, DataRequestID),
+    FOREIGN KEY (CategoryID) REFERENCES DataCategory(CategoryID) ON DELETE CASCADE,
+    FOREIGN KEY (DataRequestID) REFERENCES DataRequest(DataRequestID) ON DELETE CASCADE,
+    FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID) ON DELETE SET NULL
+);
+
+-- TransactionIDUserID Table
+CREATE TABLE TransactionIDUserID (
+    TransactionID INT NOT NULL,
+    UserID INT NOT NULL,
+    DataText VARCHAR(255) NOT NULL,
+    PRIMARY KEY (TransactionID),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+
+-- TransactionIDDataRequestID Table
+CREATE TABLE TransactionIDDataRequestID (
+    TransactionID INTEGER NOT NULL,
+    DataRequestID INTEGER,
+    PRIMARY KEY (TransactionID),
+    FOREIGN KEY (DataRequestID) REFERENCES DataRequest(DataRequestID) ON DELETE CASCADE
+);
+
+-- TransactionIDAmount Table
+CREATE TABLE TransactionIDAmount (
+    TransactionID INTEGER NOT NULL,
+    Amount INTEGER NOT NULL,
+    PRIMARY KEY (TransactionID),
+    FOREIGN KEY (TransactionID) REFERENCES TransactionIDUserID(TransactionID)
+);
+
+-- TransactionIDTimestamp Table
+CREATE TABLE TransactionIDTimestamp (
+    TransactionID INTEGER NOT NULL,
+    Timestamp DATETIME NOT NULL,
+    PRIMARY KEY (TransactionID),
+    FOREIGN KEY (TransactionID) REFERENCES TransactionIDUserID(TransactionID)
+);
+
+-- TransactionIDCurrency Table
+CREATE TABLE TransactionIDCurrency (
+    TransactionID INTEGER NOT NULL,
+    Currency CHAR(3) NOT NULL,
+    PRIMARY KEY (TransactionID),
+    FOREIGN KEY (TransactionID) REFERENCES TransactionIDUserID(TransactionID)
+);
+
+-- TransactionIDExchangeRate Table
+CREATE TABLE TransactionIDExchangeRate (
+    TransactionID INTEGER NOT NULL,
+    ExchangeRate INTEGER NOT NULL,
+    PRIMARY KEY (TransactionID),
+    FOREIGN KEY (TransactionID) REFERENCES TransactionIDUserID(TransactionID)
+);
+
+CREATE TABLE CurrencyExchangeRate (
+    Currency CHAR(3) NOT NULL PRIMARY KEY,
+    ExchangeRate INTEGER NOT NULL
+);
+
+
+-- Review Table
+CREATE TABLE Review (
+    ReviewID INT PRIMARY KEY,
+    TransactionID INT NOT NULL,
+    UserID INT NOT NULL,
+    Status VARCHAR(50) NOT NULL,
+    Compensation DECIMAL(10, 2) NOT NULL,
+    ReviewTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (TransactionID) REFERENCES TransactionIDUserID(TransactionID),
+    FOREIGN KEY (UserID) REFERENCES Company(CompanyID) ON DELETE CASCADE,
+    UNIQUE (TransactionID, UserID)
+);
+
+
+
+
+
+
+
+

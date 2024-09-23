@@ -388,7 +388,7 @@ INSERT INTO ActivityTimestamp (ActivityID, Timestamp) VALUES (8, TO_TIMESTAMP('2
 INSERT INTO ActivityTimestamp (ActivityID, Timestamp) VALUES (9, TO_TIMESTAMP('2024-07-01 18:00:00', 'YYYY-MM-DD HH24:MI:SS'));
 INSERT INTO ActivityTimestamp (ActivityID, Timestamp) VALUES (10, TO_TIMESTAMP('2024-07-01 19:00:00', 'YYYY-MM-DD HH24:MI:SS'));
 
--- UserActivityType table
+-- UserActivityTypesd table
 INSERT INTO UserActivityType (UserID, Timestamp, ActivityType) VALUES (1, TO_TIMESTAMP('2024-07-01 10:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Login');
 INSERT INTO UserActivityType (UserID, Timestamp, ActivityType) VALUES (2, TO_TIMESTAMP('2024-07-01 11:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Data Upload');
 INSERT INTO UserActivityType (UserID, Timestamp, ActivityType) VALUES (3, TO_TIMESTAMP('2024-07-01 12:00:00', 'YYYY-MM-DD HH24:MI:SS'), 'Data Download');

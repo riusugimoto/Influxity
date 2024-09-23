@@ -15,14 +15,13 @@ if (!$conn) {
 
 session_start(); // Start the session
 
-if (!isset($_SESSION['userID']) || !isset($_SESSION['company_id'])) {
+if (!isset($_SESSION['userID']) && !isset($_SESSION['company_id'])) {
     echo json_encode(['error' => "Please log in again."]);
     exit;
 }
 
-$company_id = $_SESSION['company_id'];
-
-if ($company_id) {
+if (isset($_SESSION['company_id'])) {
+    $company_id = $_SESSION['company_id'];
     // Fetch reviewed user data for the current company
     $query = "SELECT tuu.TransactionID, tuu.UserID, tuu.DataText, dr.DataPurpose, dc.CategoryName, 
                      dr.Compensation AS RequestedCompensation, r.Status, r.Compensation AS OfferedCompensation

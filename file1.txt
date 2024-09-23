@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 <?php
 echo "Hello, CPSC 304!";
 ?>
+=======
+<?php
+echo "Hello, CPSC 304!";
+?>
+>>>>>>> 96456ae89185e7d7e731fa2f65e05e8857039e2d
